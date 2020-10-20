@@ -1,9 +1,18 @@
 package sockets;
-
 import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
+
+/**
+ * 
+ * @author Gonzalo
+ *
+ *Al lado izquierdo superior se debe introducir el nombre, a la par la ip y debajo el mensaje
+ *
+ *Se logra que el mensaje lo pueda ver el primer usuario y el server, mas no fue posible que la segunda persona lograra recibir y ver sus mensajes
+ *
+ */
 
 
 public class Demo1 {
@@ -96,6 +105,7 @@ class LaminaMarcoChat extends JPanel implements Runnable{
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
 			
+			//En esta excepción se trata de crear el socket y extraer los archivos, si no, apunta el error en un archivo .txt
 			try {
 				Socket chatsocket = new Socket("127.0.0.1",9999);
 			
@@ -114,13 +124,35 @@ class LaminaMarcoChat extends JPanel implements Runnable{
 				
 				chatsocket.close();
 				
+			//Caso para el error "UnknownHostException"	
 			} catch (UnknownHostException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				
+				try {
+					
+					FileWriter fw = new FileWriter("Errores.txt",true);
+					fw.append(e.getMessage());
+					fw.close();
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			
+			//Caso para el error "IOException"
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				System.out.println(e.getMessage());
+				
+				try {
+						
+					FileWriter fw = new FileWriter("Errores.txt",true);
+					fw.append(e.getMessage());
+					fw.close();
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			
 		}
@@ -150,6 +182,7 @@ class LaminaMarcoChat extends JPanel implements Runnable{
 		 * Esta parte recibe los datos del server y los introduce en el campo de texto
 		 */
 		
+		//Trata de recibir los datos y mostrarlos, sino, apunta el error en un archivo .txt
 		try{
 			
 			ServerSocket servidor_cliente = new ServerSocket(9090);
@@ -171,10 +204,19 @@ class LaminaMarcoChat extends JPanel implements Runnable{
 			
 			
 	}
-		
+		//Caso para el error "Exception"
 		catch(Exception e){
 			
-			System.out.println(e.getMessage());
+			try {
+				
+				FileWriter fw = new FileWriter("Errores.txt",true);
+				fw.append(e.getMessage());
+				fw.close();
+				
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 		}
 			

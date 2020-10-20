@@ -61,6 +61,7 @@ class MarcoServidor extends JFrame implements Runnable{
 		 * Aqui se reciben los datos, se extraen y se copian en el servidor
 		 */
 		
+		//Trata de recibir los datos para copiarlos en el servidor y enviarlos, sino, apunta el error en un archivo .txt
 		try {
 			ServerSocket servidor = new ServerSocket(9999);
 			
@@ -94,9 +95,20 @@ class MarcoServidor extends JFrame implements Runnable{
 				
 			}
 			
+		//Caso para los errores "IOException, ClassNotFoundException"
 		} catch (IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			try {
+				
+				FileWriter fw = new FileWriter("Errores.txt",true);
+				fw.append(e.getMessage());
+				fw.close();
+				
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 		
